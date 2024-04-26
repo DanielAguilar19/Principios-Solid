@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace PrincipioSolid
         static void Main(string[] args)
         {
             EmpleadoAsalariado empleadoAsalariado1 = new EmpleadoAsalariado("Daniel", 31500, 2700);
-            EmpleadoPorHora empleadoPorHora1 = new EmpleadoPorHora("Valeria", 45, 500);
+            EmpleadoPorHora empleadoPorHora1 = new EmpleadoPorHora("Xavi", 45, 500);
 
             empleadoAsalariado1.CalcularSalario();
             empleadoPorHora1.CalcularSalario();
@@ -20,18 +21,22 @@ namespace PrincipioSolid
         }
     }
 
-    interface IEmpleado
+    interface InformacionEmpleado
     {
         string Name { get; set; }
+    }
+
+    interface CalculadoraSalarial
+    {
         void CalcularSalario();
     }
-    
-    public abstract class EmpleadoBase : IEmpleado
+
+    public abstract class EmpleadoBase : InformacionEmpleado, CalculadoraSalarial
     {
         public string Name { get; set; }
         public abstract void CalcularSalario();
     }
-
+    
     class EmpleadoPorHora : EmpleadoBase
     {
         private String _name;
@@ -72,6 +77,24 @@ namespace PrincipioSolid
         }
     }
 
+    public static class GenerarEmpleados
+    {
+        public static EmpleadoBase CrearEmpleado(String tipo, string name, int salario, int horasTrabajadas, int deducciones)
+        {
+            if (tipo == "1") 
+            {
+                return new EmpleadoAsalariado(name, salario, deducciones);
+            }
+            else if (tipo == "2")
+            {
+                return new EmpleadoPorHora(name, horasTrabajadas, salario);
+            }
+            else
+            {
+                throw new Exception("Tipo de empleado no soportado :(");
+            }
+        }
+    }
 
 }
 
