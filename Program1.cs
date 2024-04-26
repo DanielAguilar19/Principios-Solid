@@ -1,107 +1,85 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SOLID
+namespace PrincipioSolid
 {
     internal class Program
     {
         static void Main(string[] args)
         {
 
-            string entrada = Console.ReadLine();
-            string entrada2 = Console.ReadLine();
+            EmpleadoAsalariado empleadoAsalariado1 = new EmpleadoAsalariado("Daniel", 31500, 2700);
+            EmpleadoPorHora empleadoPorHora1 = new EmpleadoPorHora("Xavi", 45, 500);
 
-            int numero1 ;
-            int numero2 ;
 
-            int.TryParse(entrada, out numero1);
-            int.TryParse(entrada2, out numero2);
-           
-            FuncionSumar suma = new FuncionSumar(numero1, numero2);
-            FuncionRestar resta = new FuncionRestar(numero1, numero2);
-            FuncionMultiplicar multi = new FuncionMultiplicar(numero1, numero2);
-            FuncionDividir dividir = new FuncionDividir(numero1, numero2);
+            empleadoAsalariado1.CalcularSalario();
+            empleadoPorHora1.CalcularSalario();
 
-            Console.WriteLine("La Suma es: " + suma.Sumar(numero1, numero2));
-            Console.WriteLine("La Resta es: " + resta.Resta(numero1, numero2));
-            Console.WriteLine("La Multiplicación es: " + multi.Multiplicar(numero1, numero2));
-            Console.WriteLine("La Division es: " + dividir.Dividir(numero1, numero2) );
-            
         }
     }
 
-    class FuncionSumar
+    interface InformacionEmpleado
     {
-        private int numero1;
-        private int numero2;
-
-        public FuncionSumar(int numero1, int numero2)
-        {
-            this.numero1 = numero1;
-            this.numero2 = numero2;
-        }
-
-        public int Sumar(int numero1, int numero2)
-        {
-            int result = numero1 + numero2;
-            return result;
-        }
+        string Name {get; set;}
     }
 
-    class FuncionRestar
+    interface CalculadoraSalarial
     {
-        private int numero1;
-        private int numero2;
-
-        public FuncionRestar(int numero1, int numero2)
-        {
-            this.numero1 = numero1;
-            this.numero2 = numero2;
-        }
-
-        public int Resta(int numero1, int numero2)
-        {
-            int result = numero1 - numero2;
-            return result;
-        }
+        void CalcularSalario();
     }
 
-    class FuncionMultiplicar
+    public abstract class EmpleadoBase : InformacionEmpleado, CalculadoraSalarial
     {
-        private int numero1;
-        private int numero2;
-
-        public FuncionMultiplicar(int numero1, int numero2)
-        {
-            this.numero1 = numero1;
-            this.numero2 = numero2;
-        }
-
-        public int Multiplicar(int numero1, int numero2)
-        {
-            int result = numero1 * numero2;
-            return result;
-        }
+        public string Name {get; set;}
+        public abstract void CalcularSalario();
     }
-
-    class FuncionDividir
+    
+    class EmpleadoPorHora : EmpleadoBase
     {
-        private int numero1;
-        private int numero2;
+        private string _name;
+        private int _salarioPorHora;
+        private int _horasTrabajadas;
 
-        public FuncionDividir(int numero1, int numero2)
+        public EmpleadoPorHora(string name, int horasTrabajadas, int salario)
         {
-            this.numero1 = numero1;
-            this.numero2 = numero2;
+            _name = name;
+            _horasTrabajadas = horasTrabajadas;
+            _salarioPorHora = salario;
         }
 
-        public double Dividir(int numero1, int numero2)
+        public override void CalcularSalario()
         {
-            double result = numero1 / numero2;
-            return result;
+            int salarioTotal = _horasTrabajadas * _salarioPorHora;
+            Console.WriteLine("Para el empleado por hora " + this._name + " su sueldo es : " + salarioTotal);
         }
     }
+
+    class EmpleadoAsalariado : EmpleadoBase
+    {
+        private string _name;
+        private int _salario;
+        private int _deduccion;
+
+        public EmpleadoAsalariado(string name, int salario, int deduccion)
+        {
+            _name = name;
+            _salario = salario;
+            _deduccion = deduccion;
+        }
+
+        public override void CalcularSalario()
+        {
+            int salarioTotal = _salario - _deduccion;
+            Console.WriteLine("Para el empleado Asalariado " + this._name + " su sueldo es : " + salarioTotal);
+        }
+    }
+
+
 }
+
+
