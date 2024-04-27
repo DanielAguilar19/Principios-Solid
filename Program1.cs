@@ -25,7 +25,7 @@ namespace PrincipioSolid
 
     interface InformacionEmpleado
     {
-        string Name {get; set;}
+        string Name { get; set; }
     }
 
     interface CalculadoraSalarial
@@ -35,19 +35,18 @@ namespace PrincipioSolid
 
     public abstract class EmpleadoBase : InformacionEmpleado, CalculadoraSalarial
     {
-        public string Name {get; set;}
+        public string Name { get; set; }
         public abstract void CalcularSalario();
     }
-    
+
     class EmpleadoPorHora : EmpleadoBase
     {
-        private string _name;
         private int _salarioPorHora;
         private int _horasTrabajadas;
 
         public EmpleadoPorHora(string name, int horasTrabajadas, int salario)
         {
-            _name = name;
+            Name = name;
             _horasTrabajadas = horasTrabajadas;
             _salarioPorHora = salario;
         }
@@ -55,19 +54,18 @@ namespace PrincipioSolid
         public override void CalcularSalario()
         {
             int salarioTotal = _horasTrabajadas * _salarioPorHora;
-            Console.WriteLine("Para el empleado por hora " + this._name + " su sueldo es : " + salarioTotal);
+            Console.WriteLine("Para el empleado por hora " + Name + " su sueldo es : " + salarioTotal);
         }
     }
 
     class EmpleadoAsalariado : EmpleadoBase
     {
-        private string _name;
         private int _salario;
         private int _deduccion;
 
         public EmpleadoAsalariado(string name, int salario, int deduccion)
         {
-            _name = name;
+            Name = name;
             _salario = salario;
             _deduccion = deduccion;
         }
@@ -75,11 +73,9 @@ namespace PrincipioSolid
         public override void CalcularSalario()
         {
             int salarioTotal = _salario - _deduccion;
-            Console.WriteLine("Para el empleado Asalariado " + this._name + " su sueldo es : " + salarioTotal);
+            Console.WriteLine("Para el empleado Asalariado " + Name + " su sueldo es : " + salarioTotal);
         }
     }
 
 
 }
-
-
